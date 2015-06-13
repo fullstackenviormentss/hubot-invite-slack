@@ -1,0 +1,43 @@
+{
+  "name": "hubot-invite-slack",
+  "description": "A simple script for Hubot to send invitations and track inviters",
+  "version": "0.0.1",
+  "author": "Christopher Roussel <christopher@impleri.net>",
+  "license": "MIT",
+
+  "keywords": [
+    "hubot",
+    "hubot-scripts"
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/impleri/hubot-invite.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/impleri/hubot-invite/issues"
+  },
+
+  "dependencies": {
+    "array.prototype.find": "*",
+    "bluebird": "*",
+    "coffee-script": "~1.6",
+    "hubot-auth": "*",
+    "request-promise": "*"
+  },
+
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "rewire": "*",
+    "sinon-chai": "*",
+    "sinon": "*"
+  },
+
+  "main": "index.coffee",
+
+  "scripts": {
+    "test": "script/test"
+  }
+}
