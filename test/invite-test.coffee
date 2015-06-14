@@ -12,8 +12,47 @@ describe "invite api", ->
       set: sinon.spy()
       userForName: sinon.stub()
 
+  haystack = [
+    {
+      name: "invited-person"
+      email_address: "person@example.com"
+      sender:
+        name: "existing-user"
+        email_address: "existing@example.org"
+    }
+    {
+      name: "username"
+      email_address: "differnt@example.com"
+      sender:
+        name: "found-user"
+        email_address: "found@example.org"
+    }
+    {
+      name: "new-user"
+      email_address: "newb@example.com"
+      sender:
+        name: "username"
+        email_address: "differnt@example.com"
+    }
+    {
+      name: null
+      email_address: "friend@example.com"
+      sender:
+        name: "username"
+        email_address: "differnt@example.com"
+    }
+    {
+      name: "different-person"
+      email_address: "user@example.com"
+      sender:
+        name: "another-user"
+        email_address: "another@example.org"
+    }
+  ]
+
   beforeEach ->
     @robot = robot
+    @findHaystack = haystack
 
     @updater = sinon.spy()
     @request =
@@ -83,14 +122,50 @@ describe "invite api", ->
 
     expect(@updater).to.be.calledWith @robot
 
+
   it "finds invites by username", ->
-    null
+    needle = "username"
+    shouldBe = "found-user"
+
+    @robot.brain.get.returns @findHaystack
+
+    result = @api.find needle
+    expect(@updater).to.be.calledWith @robot
+    expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
+    expect(result).to.equal shouldBe
 
   it "finds invites by email", ->
-    null
+    needle = "user@example.com"
+    shouldBe = "another-user"
+
+    @robot.brain.get.returns @findHaystack
+
+    result = @api.find needle
+    expect(@updater).to.be.calledWith @robot
+    expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
+    expect(result).to.equal shouldBe
+
 
   it "finds invites by sender username", ->
-    null
+    needle = "username"
+    shouldBe = ["new-user", "friend@example.com"]
+
+    @robot.brain.get.returns @findHaystack
+
+    result = @api.findBySender needle
+    expect(@updater).to.be.calledWith @robot
+    expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
+    expect(result).to.have.length 2
+    expect(result).to.have.members shouldBe
 
   it "finds invites by sender email", ->
-    null
+    needle = "another@example.org"
+    shouldBe = ["different-person"]
+
+    @robot.brain.get.returns @findHaystack
+
+    result = @api.findBySender needle
+    expect(@updater).to.be.calledWith @robot
+    expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
+    expect(result).to.have.length 1
+    expect(result).to.have.members shouldBe

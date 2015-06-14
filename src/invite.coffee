@@ -4,6 +4,7 @@ request = require "request-promise"
 config = require "./config"
 filters = require "./filters"
 updater = require "./update"
+require "array.prototype.find"
 
 # Singleton instance
 instance = null
@@ -43,25 +44,25 @@ class InviteApi
 
       true
 
-  find: (invitee, msg) ->
+  find: (invitee) ->
     updater @robot
 
     key = "name"
-    key = "email" if invitee.match /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+    key = "email_address" if invitee.match /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
     invites = @robot.brain.get config.brainKey
     theInvite = invites.find filters.inviteByField key, invitee
 
     theInvite?.sender.name
 
-  findBySender: (inviter, msg) ->
+  findBySender: (inviter) ->
     updater @robot
 
     key = "name"
-    key = "email" if inviter.match /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+    key = "email_address" if inviter.match /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
     invites = @robot.brain.get config.brainKey
-    sentInvites = invites.filter filters.senderByKey key, inviter
+    sentInvites = invites.filter filters.senderByField key, inviter
     invitedUsers = []
     invitedUsers = sentInvites.map filters.reduceInvite if sentInvites.length
 

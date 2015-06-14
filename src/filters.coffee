@@ -14,4 +14,4 @@ module.exports =
 		  if user[field] is needle then true else false
 
   reduceInvite: (invite) ->
-      invite.name or invite.email
+      invite.name or invite.email_address
