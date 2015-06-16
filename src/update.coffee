@@ -1,16 +1,18 @@
 # Update user mappings
 
-request = require "request-promise"
 config = require "./config"
 filters = require "./filters"
+require "array.prototype.find"
 
 class InviteUpdate
   constructor: (@robot) ->
-    invites = @robot.brain.get config.brainKey
-    newInvites = []
-    newInvites.push @invitation invite for invite of invites
-    @robot.brain.set config.brainKey, newInvites
+    @robot.brain.set config.brainKey, @run @robot.brain.get config.brainKey
     null
+
+  run: (invites) ->
+    newInvites = []
+    newInvites.push @invitation invite for invite in invites
+    newInvites
 
   invitation: (invite) ->
     newInvite = @user invite
@@ -19,17 +21,21 @@ class InviteUpdate
     newInvite
 
   user: (user) ->
-    user = {name: user} if user typeof "string"
+    fullUser =
+      name: user
+      email_address: null
+      id: null
 
-    field = false
+    user = fullUser if typeof user is "string"
+
     field = "name" if user.name
-    field = "email_address" if user.email
+    field = "email_address" if user.email_address
     field = "id" if user.id
 
-    return user unless field
-
-    realUser = @robot.brain.users().find filters.userByField field, user[field]
-    user = realUser if realUser
+    if field?
+      filter = filters.userByField field, user[field]
+      realUser = @robot.brain.users().find filter
+      user = realUser if realUser
 
     user
 

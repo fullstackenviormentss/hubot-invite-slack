@@ -23,8 +23,11 @@
     "array.prototype.find": "*",
     "bluebird": "*",
     "coffee-script": "~1.6",
-    "hubot-auth": "*",
     "request-promise": "*"
+  },
+
+  "peerDependencies": {
+    "hubot-auth": "*"
   },
 
   "devDependencies": {

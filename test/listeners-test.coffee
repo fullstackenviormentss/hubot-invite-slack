@@ -37,12 +37,14 @@ describe "hubot listeners", ->
   target robot
 
   it "registers an invite listener", ->
-    expect(@robot.respond).to.have.been.calledWith /invite\s+(.*)/i, sinon.match.func
+    expect(@robot.respond).to.have.been.calledWith /invite\s+(.*)/i,
+      sinon.match.func
 
   it "invite listener checks for auth", ->
     @robot.auth.hasRole.returns false
     @robot.respond.args[0][1](@msg)
-    expect(@robot.auth.hasRole).to.have.been.calledWith @user, "inviter"
+    expect(@robot.auth.hasRole).to.have.been.calledWith @user, sinon.match.array
+    expect(@robot.auth.hasRole.args[0][1]).to.include.members ["inviter"]
     expect(@msg.reply).to.have.been.calledWithMatch /^.*must have.*role.*$/i
 
   it "invite listener responds after promised response", ->
@@ -68,12 +70,14 @@ describe "hubot listeners", ->
 
   # Invited command
   it "registers an invited listener", ->
-    expect(@robot.respond).to.have.been.calledWith /who\s+invited\s+(.*)\??/i, sinon.match.func
+    expect(@robot.respond).to.have.been.calledWith /who\s+invited\s+(.*)\??/i,
+      sinon.match.func
 
   it "invited listener checks for auth", ->
     @robot.auth.hasRole.returns false
     @robot.respond.args[1][1](@msg)
-    expect(@robot.auth.hasRole).to.have.been.calledWith @user, ["invite-inspector", "inviter"]
+    expect(@robot.auth.hasRole).to.have.been.calledWith @user, sinon.match.array
+    expect(@robot.auth.hasRole.args[2][1]).to.include.members ["invite-admin", "inviter"]
     expect(@msg.reply).to.have.been.calledWithMatch /^.*must have.*role.*$/i
 
   it "invited listener responds negatively if invite not found", ->
@@ -109,7 +113,9 @@ describe "hubot listeners", ->
   it "invited by listener checks for auth", ->
     @robot.auth.hasRole.returns false
     @robot.respond.args[2][1](@msg)
-    expect(@robot.auth.hasRole).to.have.been.calledWith @user, "invite-inspector"
+    expect(@robot.auth.hasRole).to.have.been.calledWith @user, sinon.match.array
+    expect(@robot.auth.hasRole.args[5][1]).to.include.members ["invite-admin"]
+    expect(@robot.auth.hasRole.args[5][1]).to.not.include.members ["inviter"]
     expect(@msg.reply).to.have.been.calledWithMatch /^.*must have.*role.*$/i
 
   it "invited by listener responds negatively if no invites found", ->

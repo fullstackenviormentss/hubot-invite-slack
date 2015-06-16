@@ -21,7 +21,7 @@ module.exports = (robot) ->
   robot.inviteSlack = api = InviteApi robot
 
   robot.respond /invite\s+(.*)/i, (msg) ->
-    unless robot.auth.hasRole msg.envelope.user, "inviter"
+    unless robot.auth.hasRole msg.envelope.user, ["admin", "inviter"]
       return msg.reply "You must have the inviter role to send invitations."
 
     invitee = msg.match[1]
@@ -36,8 +36,8 @@ module.exports = (robot) ->
     null
 
   robot.respond /who\s+invited\s+(.*)\??/i, (msg) ->
-    unless robot.auth.hasRole msg.envelope.user, ["invite-inspector", "inviter"]
-      return msg.reply "You must have the inviter or invite-inspector role to see who invited a user."
+    unless robot.auth.hasRole msg.envelope.user, ["admin", "invite-admin", "inviter"]
+      return msg.reply "You must have the inviter or invite-admin role to see who invited a user."
 
     invitee = msg.match[1]
     inviter = api.find invitee
@@ -48,8 +48,8 @@ module.exports = (robot) ->
     null
 
   robot.respond /who\s+was\s+invited\s+by\s+(.*)\??/i, (msg) ->
-    unless robot.auth.hasRole msg.envelope.user, "invite-inspector"
-      return msg.reply "You must have the invite-inspector role to see what invitations were sent by a user."
+    unless robot.auth.hasRole msg.envelope.user, ["admin", "invite-admin"]
+      return msg.reply "You must have the invite-admin role to see what invitations were sent by a user."
 
 
     sender = msg.match[1]

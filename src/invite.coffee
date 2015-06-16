@@ -6,6 +6,8 @@ filters = require "./filters"
 updater = require "./update"
 require "array.prototype.find"
 
+emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+
 # Singleton instance
 instance = null
 
@@ -48,7 +50,7 @@ class InviteApi
     updater @robot
 
     key = "name"
-    key = "email_address" if invitee.match /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+    key = "email_address" if invitee.match emailRegex
 
     invites = @robot.brain.get config.brainKey
     theInvite = invites.find filters.inviteByField key, invitee
@@ -59,7 +61,7 @@ class InviteApi
     updater @robot
 
     key = "name"
-    key = "email_address" if inviter.match /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+    key = "email_address" if inviter.match emailRegex
 
     invites = @robot.brain.get config.brainKey
     sentInvites = invites.filter filters.senderByField key, inviter
