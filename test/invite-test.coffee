@@ -83,7 +83,7 @@ describe "invite api", ->
     expect(returnedPromise).to.equal promisePlaceholder
     expect(@request.post).to.have.been.calledWith sinon.match.object
       .and(sinon.match.has("url", sinon.match.string))
-      .and sinon.match.has "formData", sinon.match.object
+      .and sinon.match.has "form", sinon.match.object
     expect(promiseChain).to.have.been.calledWith sinon.match.func
 
     expect(result).to.be.false

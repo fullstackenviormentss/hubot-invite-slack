@@ -17,7 +17,7 @@ class InviteApi
   send: (invitee, inviter) ->
     promise = request.post
       url: "https://#{config.team}.slack.com/api/users.admin.invite"
-      formData:
+      form:
         email: invitee
         set_active: true
         token: config.token
