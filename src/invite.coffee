@@ -15,13 +15,13 @@ class InviteApi
     null
 
   send: (invitee, inviter) ->
-    emailAddress = encodeURIComponent invitee
-    url = "https://#{config.team}.slack.com/api/users.admin.invite?"
-    url += "token=#{token}&"
-    url += "email=#{emailAddress}"
-    console.log url if process.env.HUBOT_DEBUG
+    promise = request.post
+      url: "https://#{config.team}.slack.com/api/users.admin.invite"
+      form:
+        token: config.token
+        set_active: true
+        email: invitee
 
-    promise = request.post url
     promise.then (responseBody) =>
       body = JSON.parse responseBody
 
