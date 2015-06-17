@@ -15,7 +15,7 @@ class InviteUpdate
   invitation: (invite) ->
     newInvite = @user invite
     newInvite.time = invite.time
-    newInvite.sender = @user invite.sender
+    newInvite.sender = invite.sender
     newInvite
 
   user: (user) ->

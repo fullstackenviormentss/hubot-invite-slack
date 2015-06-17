@@ -15,12 +15,15 @@ class InviteApi
     null
 
   send: (invitee, inviter) ->
-    promise = request.post
+    postPromise = request.post
       url: "https://#{config.team}.slack.com/api/users.admin.invite"
       form:
         token: config.token
         set_active: true
         email: invitee
+
+    promise = postPromise.finally ->
+      updater @robot
 
     promise.then (responseBody) =>
       body = JSON.parse responseBody
@@ -39,8 +42,6 @@ class InviteApi
         name: null
         sender: inviter
       @robot.brain.set config.brainKey, invites
-
-      updater @robot
 
       true
 

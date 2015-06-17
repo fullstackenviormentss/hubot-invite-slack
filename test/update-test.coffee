@@ -56,25 +56,22 @@ describe "updater", ->
     updateInvite.restore()
 
   it "updates an invitation", ->
-    oldSender = "old-sender"
-    newSender = "new-sender"
+    sender = "new-sender"
     oldInvite =
       name: "old-invite"
       time: "old"
-      sender: oldSender
+      sender: sender
     newInvite =
       name: "new-invite"
       time: "new"
-      sender: newSender
+      sender: sender
 
     updateUser = sinon.stub @updater, "user"
-    updateUser.onFirstCall().returns newInvite
-    updateUser.onSecondCall().returns newSender
+    updateUser.returns newInvite
 
     response = @updater.invitation oldInvite
 
     expect(updateUser).to.have.been.calledWith oldInvite
-    expect(updateUser).to.have.been.calledWith oldSender
     expect(response).to.deep.equal newInvite
     updateUser.restore()
 

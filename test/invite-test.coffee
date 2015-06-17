@@ -74,8 +74,12 @@ describe "invite api", ->
     promiseChain = sinon.stub()
     promiseChain.returns promisePlaceholder
 
-    @request.post.returns
+    promiseEnd = sinon.stub()
+    promiseEnd.returns
       then: promiseChain
+
+    @request.post.returns
+      finally: promiseEnd
 
     returnedPromise = @api.send invitee, sender
     result = promiseChain.args[0][0] JSON.stringify response
@@ -85,6 +89,7 @@ describe "invite api", ->
       .and(sinon.match.has("url", sinon.match.string))
       .and sinon.match.has "form", sinon.match.object
     expect(promiseChain).to.have.been.calledWith sinon.match.func
+    expect(promiseEnd).to.have.been.calledWith sinon.match.func
 
     expect(result).to.be.false
     expect(@api.error).to.equal errorMessage
@@ -97,9 +102,14 @@ describe "invite api", ->
     promiseChain = sinon.stub()
     promiseChain.returns promisePlaceholder
 
-    @robot.brain.get.returns []
-    @request.post.returns
+    promiseEnd = sinon.stub()
+    promiseEnd.returns
       then: promiseChain
+
+    @request.post.returns
+      finally: promiseEnd
+
+    @robot.brain.get.returns []
 
     returnedPromise = @api.send invitee, sender
     result = promiseChain.args[0][0] JSON.stringify {ok: true}
@@ -109,6 +119,7 @@ describe "invite api", ->
       .and(sinon.match.has("url", sinon.match.string))
       .and sinon.match.has "form", sinon.match.object
     expect(promiseChain).to.have.been.calledWith sinon.match.func
+    expect(promiseEnd).to.have.been.calledWith sinon.match.func
 
     expect(result).to.be.true
     expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
@@ -117,9 +128,6 @@ describe "invite api", ->
 
     expect(@robot.brain.set.args[0][1][0]).to.have.property "email_address", invitee
     expect(@robot.brain.set.args[0][1][0]).to.have.property "sender", "existing-user"
-
-    expect(@updater).to.be.calledWith @robot
-
 
   it "finds invites by username", ->
     needle = "username"
