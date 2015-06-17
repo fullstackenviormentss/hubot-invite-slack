@@ -10,7 +10,7 @@ In hubot project repo, run:
 
 `npm install hubot-invite-slack --save`
 
-Then add **hubot-invite** and **hubot-auth** to your `external-scripts.json`:
+Then add **hubot-invite-slack** and **hubot-auth** to your `external-scripts.json`:
 
 ```json
 ["hubot-auth", "hubot-invite-slack"]

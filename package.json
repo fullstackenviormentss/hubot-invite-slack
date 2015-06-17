@@ -1,7 +1,7 @@
 {
   "name": "hubot-invite-slack",
   "description": "A simple script for Hubot to send invitations and track inviters",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Christopher Roussel <christopher@impleri.net>",
   "license": "MIT",
 
@@ -14,11 +14,11 @@
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/impleri/hubot-invite.git"
+    "url": "git://github.com/impleri/hubot-invite-slack.git"
   },
 
   "bugs": {
-    "url": "https://github.com/impleri/hubot-invite/issues"
+    "url": "https://github.com/impleri/hubot-invite-slack/issues"
   },
 
   "dependencies": {
