@@ -6,7 +6,8 @@ require "array.prototype.find"
 
 class InviteUpdate
   constructor: (@robot) ->
-    @robot.brain.set config.brainKey, @run @robot.brain.get config.brainKey
+    invites = @robot.brain.get config.brainKey or []
+    @robot.brain.set config.brainKey, @run invites
     null
 
   run: (invites) ->
