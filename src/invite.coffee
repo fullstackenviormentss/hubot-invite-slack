@@ -37,7 +37,7 @@ class InviteApi
         email_address: invitee
         id: null
         name: null
-        sender: @robot.brain.userForName inviter or inviter
+        sender: inviter
       @robot.brain.set config.brainKey, invites
 
       updater @robot

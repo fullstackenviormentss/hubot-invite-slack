@@ -98,7 +98,6 @@ describe "invite api", ->
     promiseChain.returns promisePlaceholder
 
     @robot.brain.get.returns []
-    @robot.brain.userForName.returns "user"
     @request.post.returns
       then: promiseChain
 
@@ -113,12 +112,11 @@ describe "invite api", ->
 
     expect(result).to.be.true
     expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
-    expect(@robot.brain.userForName).to.have.been.calledWith sender
     expect(@robot.brain.set).to.have.been.calledWith @robot.brain.get.args[0][0],
       sinon.match.array
 
     expect(@robot.brain.set.args[0][1][0]).to.have.property "email_address", invitee
-    expect(@robot.brain.set.args[0][1][0]).to.have.property "sender", "user"
+    expect(@robot.brain.set.args[0][1][0]).to.have.property "sender", "existing-user"
 
     expect(@updater).to.be.calledWith @robot
 
