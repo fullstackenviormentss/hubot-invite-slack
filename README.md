@@ -1,5 +1,7 @@
 # Hubot Invite to Slack
 
+[![Build Status](https://travis-ci.org/impleri/hubot-invite-slack.svg?branch=master)](https://travis-ci.org/impleri/hubot-invite-slack)
+
 A simple script for Hubot to send invitations in Slack and track who is inviting whom.
 
 This requires _hubot-auth_ to manage permissions.
