@@ -1,16 +1,13 @@
-# Update user mappings
-
 config = require "./config"
 filters = require "./filters"
 require "array.prototype.find"
 
 class InviteUpdate
   constructor: (@robot) ->
-    invites = @robot.brain.get config.brainKey or []
-    @robot.brain.set config.brainKey, @run invites
+    @robot.brain.set config.brainKey, @run @robot.brain.get config.brainKey
     null
 
-  run: (invites) ->
+  run: (invites = []) ->
     newInvites = []
     newInvites.push @invitation invite for invite in invites
     newInvites

@@ -1,7 +1,7 @@
 {
   "name": "hubot-invite-slack",
   "description": "A simple script for Hubot to send invitations and track inviters",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Christopher Roussel <christopher@impleri.net>",
   "license": "MIT",
 

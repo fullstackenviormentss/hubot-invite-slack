@@ -1,5 +1,3 @@
-# Actual API
-
 request = require "request-promise"
 config = require "./config"
 filters = require "./filters"
