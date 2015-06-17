@@ -3,5 +3,5 @@
 module.exports =
   channels: process.env.HUBOT_SLACK_INVITE_CHANNELS or ""
   team: process.env.HUBOT_SLACK_TEAM or "my-team"
-  token: process.env.HUBOT_SLACK_TOKEN or "token"
+  token: process.env.HUBOT_SLACK_INVITE_TOKEN or "token"
   brainKey: "slack.invites"
