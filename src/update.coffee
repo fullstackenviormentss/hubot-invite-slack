@@ -3,8 +3,12 @@ filters = require "./filters"
 require "array.prototype.find"
 
 class InviteUpdate
+  users = []
+
   constructor: (@robot) ->
     @robot.brain.set config.brainKey, @run @robot.brain.get config.brainKey
+    @users = Object.keys(@robot.brain.users()).map (key) =>
+      @robot.brain.users()[key]
     null
 
   run: (invites = []) ->
@@ -32,7 +36,7 @@ class InviteUpdate
 
     if field?
       filter = filters.userByField field, user[field]
-      realUser = @robot.brain.users().find filter
+      realUser = @users.find filter
       user = realUser if realUser
 
     user

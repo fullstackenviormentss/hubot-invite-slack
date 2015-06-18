@@ -12,23 +12,43 @@ robot =
     set: sinon.stub()
     users: sinon.stub()
 
-users = [
-  {
+expectedIdUser =
+  id: 10
+  name: "invited-person"
+  email_address: "person@example.com"
+
+expectedNameUser =
+  id: 30
+  name: "username"
+  email_address: "differnt@example.com"
+
+expectedEmailUser =
+  id: 60
+  name: "different-person"
+  email_address: "user@example.com"
+
+expectedStringUser =
+  id: 70
+  name: "another-user"
+  email_address: "another@example.org"
+
+users =
+  10: expectedIdUser
+  20:
     id: 20
     name: "existing-user"
     email_address: "existing@example.org"
-  }
-  {
+  30: expectedNameUser
+  40:
     id: 40
     name: "found-user"
     email_address: "found@example.org"
-  }
-  {
+  50:
     id: 50
     name: "new-user"
     email_address: "newb@example.com"
-  }
-]
+  60: expectedEmailUser
+  70: expectedStringUser
 
 describe "updater", ->
   @updater = null
@@ -38,6 +58,7 @@ describe "updater", ->
 
   it "constructs", ->
     @robot.brain.get.returns []
+    @robot.brain.users.returns users
 
     @updater = UpdateClass @robot
     expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
@@ -83,66 +104,32 @@ describe "updater", ->
     expect(response).to.equal testUser
 
   it "updates user by name", ->
-    expectedUser =
-      id: 30
-      name: "username"
-      email_address: "differnt@example.com"
-
-    users.push expectedUser
-    @robot.brain.users.returns users
-
     testUser =
       name: "username"
       email_address: null
       id: null
 
     response = @updater.user testUser
-    expect(response).to.deep.equal expectedUser
+    expect(response).to.deep.equal expectedNameUser
 
   it "updates user by string", ->
-    expectedUser =
-      id: 70
-      name: "another-user"
-      email_address: "another@example.org"
-
-    users.push expectedUser
-    @robot.brain.users.returns users
-
-    testUser = "another-user"
-
-    response = @updater.user testUser
-    expect(response).to.deep.equal expectedUser
+    response = @updater.user "another-user"
+    expect(response).to.deep.equal expectedStringUser
 
   it "updates user by email", ->
-    expectedUser =
-      id: 60
-      name: "different-person"
-      email_address: "user@example.com"
-
-    users.push expectedUser
-    @robot.brain.users.returns users
-
     testUser =
       name: "username"
       email_address: "user@example.com"
       id: null
 
     response = @updater.user testUser
-    expect(response).to.deep.equal expectedUser
+    expect(response).to.deep.equal expectedEmailUser
 
   it "updates user by id", ->
-    expectedUser =
-      id: 10
-      name: "invited-person"
-      email_address: "person@example.com"
-
-    users.push expectedUser
-    @robot.brain.users.returns users
-
     testUser =
       name: "username"
       email_address: "user@example.com"
       id: 10
 
     response = @updater.user testUser
-    expect(response).to.deep.equal expectedUser
+    expect(response).to.deep.equal expectedIdUser
