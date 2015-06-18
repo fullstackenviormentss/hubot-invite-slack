@@ -74,12 +74,8 @@ describe "invite api", ->
     promiseChain = sinon.stub()
     promiseChain.returns promisePlaceholder
 
-    promiseEnd = sinon.stub()
-    promiseEnd.returns
-      then: promiseChain
-
     @request.post.returns
-      finally: promiseEnd
+      then: promiseChain
 
     returnedPromise = @api.send invitee, sender
     result = promiseChain.args[0][0] JSON.stringify response
@@ -89,7 +85,6 @@ describe "invite api", ->
       .and(sinon.match.has("url", sinon.match.string))
       .and sinon.match.has "form", sinon.match.object
     expect(promiseChain).to.have.been.calledWith sinon.match.func
-    expect(promiseEnd).to.have.been.calledWith sinon.match.func
 
     expect(result).to.be.false
     expect(@api.error).to.equal errorMessage
@@ -102,12 +97,8 @@ describe "invite api", ->
     promiseChain = sinon.stub()
     promiseChain.returns promisePlaceholder
 
-    promiseEnd = sinon.stub()
-    promiseEnd.returns
-      then: promiseChain
-
     @request.post.returns
-      finally: promiseEnd
+      then: promiseChain
 
     @robot.brain.get.returns []
 
@@ -119,7 +110,6 @@ describe "invite api", ->
       .and(sinon.match.has("url", sinon.match.string))
       .and sinon.match.has "form", sinon.match.object
     expect(promiseChain).to.have.been.calledWith sinon.match.func
-    expect(promiseEnd).to.have.been.calledWith sinon.match.func
 
     expect(result).to.be.true
     expect(@robot.brain.get).to.have.been.calledWith sinon.match.string
