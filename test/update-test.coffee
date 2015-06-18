@@ -55,10 +55,11 @@ describe "updater", ->
 
   beforeEach ->
     @robot = robot
+    @robot.brain.users.returns users
 
   it "constructs", ->
+    @robot = robot
     @robot.brain.get.returns []
-    @robot.brain.users.returns users
 
     @updater = UpdateClass @robot
     expect(@robot.brain.get).to.have.been.calledWith sinon.match.string

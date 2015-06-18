@@ -2,13 +2,16 @@ config = require "./config"
 filters = require "./filters"
 require "array.prototype.find"
 
+# Singleton instance
+instance = null
+
 class InviteUpdate
   users = []
 
   constructor: (@robot) ->
-    @robot.brain.set config.brainKey, @run @robot.brain.get config.brainKey
     @users = Object.keys(@robot.brain.users()).map (key) =>
       @robot.brain.users()[key]
+    @robot.brain.set config.brainKey, @run @robot.brain.get config.brainKey
     null
 
   run: (invites = []) ->
@@ -42,4 +45,6 @@ class InviteUpdate
     user
 
 module.exports = (robot) ->
-  new InviteUpdate robot
+  null unless robot?
+  instance ?= new InviteUpdate robot
+  instance
